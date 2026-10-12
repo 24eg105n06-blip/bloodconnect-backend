@@ -1,11 +1,15 @@
 package com.bloodconnect.controller;
 
 import com.bloodconnect.model.Donor;
+import com.bloodconnect.dto.AvailabilityUpdate;
+import com.bloodconnect.dto.DonorSummary;
 import com.bloodconnect.service.DonorService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,14 +28,19 @@ public class DonorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Donor create(@Valid @RequestBody Donor donor) {
-        return donorService.create(donor);
+    public DonorSummary create(@Valid @RequestBody Donor donor) {
+        return donorService.toSummary(donorService.create(donor));
     }
 
     @GetMapping({ "", "/search" })
-    public List<Donor> search(
+    public List<DonorSummary> search(
             @RequestParam(required = false) String bloodGroup,
             @RequestParam(required = false) String location) {
-        return donorService.search(bloodGroup, location);
+        return donorService.toSummaries(donorService.search(bloodGroup, location));
+    }
+
+    @PutMapping("/{id}/availability")
+    public DonorSummary updateAvailability(@PathVariable Long id, @Valid @RequestBody AvailabilityUpdate update) {
+        return donorService.toSummary(donorService.updateAvailability(id, update.available()));
     }
 }

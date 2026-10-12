@@ -1,6 +1,7 @@
 package com.bloodconnect.controller;
 
 import com.bloodconnect.model.BloodRequest;
+import com.bloodconnect.dto.BloodRequestSummary;
 import com.bloodconnect.service.BloodRequestService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -26,12 +27,18 @@ public class BloodRequestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BloodRequest create(@Valid @RequestBody BloodRequest request) {
-        return bloodRequestService.create(request);
+    public BloodRequestSummary create(@Valid @RequestBody BloodRequest request) {
+        return toSummary(bloodRequestService.create(request));
     }
 
     @GetMapping
-    public List<BloodRequest> findAll() {
-        return bloodRequestService.findAll();
+    public List<BloodRequestSummary> findAll() {
+        return bloodRequestService.findAll().stream().map(this::toSummary).toList();
+    }
+
+    private BloodRequestSummary toSummary(BloodRequest request) {
+        return new BloodRequestSummary(request.getId(), request.getPatientName(), request.getBloodGroup(),
+                request.getUnitsRequired(), request.getHospitalName(), request.getLocation(), request.getUrgency(),
+                request.getMessage(), request.getRequiredDate(), request.getCreatedAt());
     }
 }

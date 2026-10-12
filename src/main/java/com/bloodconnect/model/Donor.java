@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -20,7 +22,12 @@ public class Donor {
     private String name;
 
     @NotBlank
+    @jakarta.validation.constraints.Pattern(regexp = "(?i:^(A|B|AB|O)[+-]$)")
     private String bloodGroup;
+
+    @Min(1)
+    @Max(120)
+    private Integer age;
 
     @NotBlank
     private String phone;
@@ -42,6 +49,8 @@ public class Donor {
     public void setName(String name) { this.name = name; }
     public String getBloodGroup() { return bloodGroup; }
     public void setBloodGroup(String bloodGroup) { this.bloodGroup = bloodGroup; }
+    public Integer getAge() { return age; }
+    public void setAge(Integer age) { this.age = age; }
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
     public String getLocation() { return location; }

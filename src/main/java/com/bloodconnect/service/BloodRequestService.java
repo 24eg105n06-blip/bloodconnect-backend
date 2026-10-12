@@ -15,6 +15,7 @@ public class BloodRequestService {
 
     public BloodRequest create(BloodRequest request) {
         request.setPatientName(request.getPatientName().trim());
+        request.setBloodGroup(request.getBloodGroup().trim().toUpperCase());
         request.setHospitalName(request.getHospitalName().trim());
         request.setLocation(request.getLocation().trim());
         request.setContactNumber(request.getContactNumber().trim());
