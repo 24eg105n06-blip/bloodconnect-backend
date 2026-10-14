@@ -12,6 +12,7 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
                 .allowedOrigins(
+                        "https://bloodconnect-frontend-zcc4.vercel.app",
                         "http://localhost:5175",
                         "http://localhost:5176",
                         "http://localhost:5173")
